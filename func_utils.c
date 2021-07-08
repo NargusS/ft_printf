@@ -53,12 +53,18 @@ char	*str_with_precision(char *str, int precision)
 	return (new_str);
 }
 
-int	putstr(char *str)
+int	putstr(char *str, char type)
 {
 	int	i;
 
 	i = 0;
 	while (str[i])
 		write(1, &str[i++], 1);
+	if (i == 0 && type == 'c')
+	{
+		write (1, "\0", 1);
+		i++;
+	}
+	free(str);
 	return (i);
 }

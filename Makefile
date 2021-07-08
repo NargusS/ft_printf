@@ -10,11 +10,9 @@ CFLAGS  = -Wall -Wextra -Werror
 RM		= rm -f
 
 all:		${NAME}
-
+bonus:		${NAME}
 ${NAME}:	${OBJS}
 			ar -rcs ${NAME} ${OBJS}
-bonus:		${OBJBONUS}
-			ar -rcs ${NAME} ${OBJBONUS}
 %.o: %.c
 			${CC} -c ${CFLAGS} -o $@ $< -I ${HEADER}
 

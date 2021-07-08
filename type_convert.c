@@ -91,7 +91,7 @@ char	*convert_to_hex(unsigned int nbr, char *base, int precision)
 	return (hex_conversion);
 }
 
-char	*convert_pointer_to_address(void *pointer, int precision)
+char	*convert_to_pointer(void *pointer, int precision)
 {
 	char			*hex_conversion;
 	char			*base;

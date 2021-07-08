@@ -44,10 +44,10 @@ char	*char_to_str(char c, t_flags *flags, va_list elem)
 		character = va_arg(elem, int);
 		if (character == 0)
 		{
-			if (flags->minus > 0)
+			/*if (flags->minus > 0)
 				flags->width = 0;
-			else
-				flags->width--;
+			else*/
+			flags->width--;
 		}
 		else
 			append_char(&str, character);

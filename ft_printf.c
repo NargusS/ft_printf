@@ -1,37 +1,38 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 int	ft_printf(const char *str, ...)
 {
-	int		printf_char;
 	va_list	elem;
 	t_flags	flags;
 
 	va_start(elem, str);
-	printf_char = 0;
+	flags.char_count = 0;
 	while (*str)
 	{
 		initialize_flags(&flags);
 		if (*str == '%')
 		{
 			str = parsing(str, &flags, elem);
-			printf_char += printf_all(*str, elem, &flags);
+			printf_all(elem, &flags);
 			str++;
+			if (flags.char_count == -1)
+				return (flags.char_count);
 		}
 		if (*str != 0 && *str != '%')
 		{
 			write(1, str, 1);
-			printf_char++;
+			flags.char_count++;
 			str++;
 		}
 	}
 	va_end(elem);
-	return (printf_char);
+	return (flags.char_count);
 }
 
 void	*parsing(const char *str, t_flags *flags, va_list elem)
 {
 	str++;
-	while (*str == '0' || *str == '-')
+	while (*str == '0' || *str == '-' || *str == '#' || *str == '+' || *str == ' ')
 		modif_flags(flags, *(str++));
 	while (*str >= '0' && *str <= '9')
 		flags->width = (flags->width * 10) + (*(str++) - '0');
@@ -52,59 +53,65 @@ void	*parsing(const char *str, t_flags *flags, va_list elem)
 			str++;
 		}
 	}
+	flags->type_conv = *str;
 	change_flags(flags);
 	return ((void *)str);
 }
 
-void	convert_all(t_flags *flags, va_list elem, char **str, char c)
+void	convert_all(t_flags *flags, va_list elem, char **str)
 {
 	long long	nbr;
 	char		*base;
 
-	if (c == 'd' || c == 'i')
-		*str = ft_itoa_prec((long long)va_arg(elem, long long), *flags);
-	else if (c == 'u')
-		*str = ft_uitoa_prec(va_arg(elem, unsigned long), *flags);
-	else if (c == 'c' || c == '%')
-		*str = char_to_str(c, flags, elem);
-	else if (c == 's')
-		*str = str_with_precision(va_arg(elem, void *), flags->precision);
-	else if (c == 'p')
-		*str = convert_to_pointer(va_arg(elem, void *), flags->precision);
-	else if (c == 'x' || c == 'X')
+	if (flags->type_conv == 'd' || flags->type_conv == 'i')
+		*str = ft_itoa_prec(va_arg(elem, long long), flags);
+	else if (flags->type_conv == 'u')
+		*str = ft_uitoa_prec(va_arg(elem, unsigned long), flags);
+	else if (flags->type_conv == 'c' || flags->type_conv == '%')
+		*str = char_to_str(flags, elem);
+	else if (flags->type_conv == 's')
+		*str = str_with_precision(va_arg(elem, void *), flags);
+	else if (flags->type_conv == 'p')
+		*str = convert_to_pointer(va_arg(elem, void *), flags);
+	else if (flags->type_conv == 'x' || flags->type_conv == 'X')
 	{
 		nbr = va_arg(elem, unsigned int);
-		base = choose_type_convert(c);
-		*str = convert_to_hex(nbr, base, flags->precision);
+		base = choose_type_convert(flags->type_conv);
+		*str = convert_to_hex(nbr, base, flags);
+		if (flags->sharp > 0 && nbr != 0)
+		{
+			append_char(str, flags->type_conv);
+			append_char(str, '0');
+		}
 	}
 }
 
-int	printf_all(char c, va_list elem, t_flags *flags)
+void	printf_all(va_list elem, t_flags *flags)
 {
 	char	*str;
-	int		printf_char;
 	int		check_width;
 	int		remp;
 
-	printf_char = 0;
-	convert_all(flags, elem, &str, c);
+	str = NULL;
+	convert_all(flags, elem, &str);
+	if (str == NULL && (flags->type_conv != 's'))
+		flags->char_count = -1;
 	check_width = flags->width - ft_strlen(str);
 	if (check_width > 0)
 	{
 		remp = ' ';
 		if (flags->minus > 0)
-			printf_char += putstr(str, c);
+			putstr(str, flags);
 		if (flags->zero > 0)
 			remp = '0';
 		while (check_width--)
 		{
 			write(1, &remp, 1);
-			printf_char++;
+			flags->char_count++;
 		}
 		if (flags->minus == 0)
-			printf_char += putstr(str, c);
+			putstr(str, flags);
 	}
 	else
-		printf_char += putstr(str, c);
-	return (printf_char);
+		putstr(str, flags);
 }

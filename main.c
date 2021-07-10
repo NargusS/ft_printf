@@ -1,8 +1,10 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 int main()
 {
-	printf("%d",ft_printf("%c, %-c, %12c, %-3c, %-1c, %1c, %-2c, %-4c, %5c, %3c, %-*c, %-*c, %*c, %*c", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 18, 0, 0, 0, 0, 0, 0));
-	printf("\n%d",printf("\n%c, %-c, %12c, %-3c, %-1c, %1c, %-2c, %-4c, %5c, %3c, %-*c, %-*c, %*c, %*c", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 18, 0, 0, 0, 0, 0, 0));
-	//printf("{%2c}", 0);
+    int test =467;
+    //printf("%n\n",&test);
+    //printf("%5c\n", 0);
+    ft_printf("%.5d", 0);
+    printf("\n%5c", 0);
 }

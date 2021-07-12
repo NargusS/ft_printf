@@ -1,10 +1,8 @@
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
-# include <stdio.h>
+#ifndef FT_PRINTF_BONUS_H
+# define FT_PRINTF_BONUS_H
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdarg.h>
-# include <string.h>
 
 typedef struct s_flags
 {

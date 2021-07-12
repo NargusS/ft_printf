@@ -1,6 +1,7 @@
 NAME	= libftprintf.a
-SRCS	= type_convert.c ft_printf.c func_utils.c flags_func.c ft_printf.h
-BONUS	= bonus/type_convert_bonus.c bonus/ft_printf_bonus.c bonus/func_utils_bonus.c bonus/flags_func_bonus.c bonus/ft_printf_bonus.h
+SRCS	= type_int_conv.c type_hex_conv.c type_char_conv.c ft_printf.c func_utils.c flags_func.c ft_printf.h
+BONUS	= type_int_conv_bonus.c type_hex_conv_bonus.c type_char_conv_bonus.c ft_printf_bonus.c func_utils_bonus.c \
+		flags_func_bonus.c ft_printf_bonus.h
 OBJS	= ${SRCS:.c=.o}
 OBJBONUS =  ${BONUS:.c=.o}
 
@@ -15,14 +16,12 @@ all:		${NAME}
 
 ${NAME}:	${OBJS}
 			ar -rcs ${NAME} ${OBJS}
-bonus:		all
-
+bonus:		${OBJBONUS}
+			ar -rcs ${NAME} ${OBJBONUS}
 %.o: %.c
 			${CC} -c ${CFLAGS} -o $@ $< -I ${HEADER}
-
 clean:
 			${RM} *.o
-
 fclean:		clean
 			${RM} ${NAME}
 re : fclean all

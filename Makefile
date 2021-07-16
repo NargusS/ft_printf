@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: achane-l <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/07/14 12:04:03 by achane-l          #+#    #+#              #
+#    Updated: 2021/07/14 12:04:16 by achane-l         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME	= libftprintf.a
 SRCS	= type_int_conv.c type_hex_conv.c type_char_conv.c ft_printf.c func_utils.c flags_func.c ft_printf.h
 BONUS	= type_int_conv_bonus.c type_hex_conv_bonus.c type_char_conv_bonus.c ft_printf_bonus.c func_utils_bonus.c \
